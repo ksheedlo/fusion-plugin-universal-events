@@ -35,7 +35,7 @@ class UniversalEmitter extends Emitter {
     this.flush = this.flushInternal.bind(this);
     this.fetch = fetch;
     this.setFrequency(5000);
-    window.addEventListener('beforeunload', this.flush);
+    window.addEventListener('visibilitychange', this.flushBeforeTerminated);
   }
   setFrequency(frequency: number): void {
     window.clearInterval(this.interval);
@@ -50,6 +50,11 @@ class UniversalEmitter extends Emitter {
   from(): UniversalEmitter {
     return this;
   }
+  flushBeforeTerminated = () => {
+    if (document.hidden) {
+      this.flushInternal();
+    }
+  };
   async flushInternal(): Promise<void> {
     const items = this.storage.getAndClear();
     if (items.length === 0) return;
@@ -73,7 +78,7 @@ class UniversalEmitter extends Emitter {
     }
   }
   teardown(): void {
-    window.removeEventListener('beforeunload', this.flush);
+    window.removeEventListener('visibilitychange', this.flushBeforeTerminated);
     clearInterval(this.interval);
     this.interval = null;
   }
