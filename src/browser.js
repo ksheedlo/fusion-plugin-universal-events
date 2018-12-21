@@ -39,7 +39,7 @@ class UniversalEmitter extends Emitter {
   }
   setFrequency(frequency: number): void {
     window.clearInterval(this.interval);
-    this.interval = setInterval(this.flush, frequency);
+    this.interval = setInterval(this.flushInternal, frequency);
   }
   emit(type: mixed, payload: mixed): void {
     payload = super.mapEvent(type, payload);
