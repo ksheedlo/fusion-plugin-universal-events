@@ -52,7 +52,7 @@ class UniversalEmitter extends Emitter {
   }
   flushBeforeTerminated = () => {
     if (document.hidden) {
-      this.flushInternal();
+      return this.flushInternal();
     }
   };
   async flushInternal(): Promise<void> {
@@ -91,12 +91,9 @@ const plugin =
       fetch: FetchToken,
       storage: UniversalEventsBatchStorageToken.optional,
     },
-    provides: ({fetch, storage}) => {
-      return new UniversalEmitter(fetch, storage || localBatchStorage);
-    },
-    cleanup: async emitter => {
-      return emitter.teardown();
-    },
+    provides: ({fetch, storage}) =>
+      new UniversalEmitter(fetch, storage || localBatchStorage),
+    cleanup: async emitter => emitter.teardown(),
   });
 
 export default ((plugin: any): FusionPlugin<DepsType, IEmitter>);
