@@ -21,8 +21,8 @@ import {
   inMemoryBatchStorage as store,
 } from '../storage/index.js';
 
-// Set document.hidden to test flushBeforeTerminated
-Object.defineProperty(document, 'hidden', {value: true});
+// Set document.visibilityState to test flushBeforeTerminated
+Object.defineProperty(document, 'visibilityState', {value: 'hidden'});
 const visibilitychangeEvent = new Event('visibilitychange');
 
 /* Test helpers */

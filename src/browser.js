@@ -51,7 +51,7 @@ class UniversalEmitter extends Emitter {
     return this;
   }
   flushBeforeTerminated = () => {
-    if (document.hidden) {
+    if (document.visibilityState === 'hidden') {
       return this.flushInternal();
     }
   };
