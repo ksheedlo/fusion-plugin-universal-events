@@ -50,11 +50,8 @@ class UniversalEmitter extends Emitter {
   from(): UniversalEmitter {
     return this;
   }
-  flushBeforeTerminated = () => {
-    if (document.visibilityState === 'hidden') {
-      return this.flushInternal();
-    }
-  };
+  flushBeforeTerminated = () =>
+    document.visibilityState === 'hidden' && this.flushInternal();
   async flushInternal(): Promise<void> {
     const items = this.storage.getAndClear();
     if (items.length === 0) return;
