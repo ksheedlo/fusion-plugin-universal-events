@@ -88,9 +88,12 @@ const plugin =
       fetch: FetchToken,
       storage: UniversalEventsBatchStorageToken.optional,
     },
-    provides: ({fetch, storage}) =>
-      new UniversalEmitter(fetch, storage || localBatchStorage),
-    cleanup: async emitter => emitter.teardown(),
+    provides: ({fetch, storage}) => {
+      return new UniversalEmitter(fetch, storage || localBatchStorage);
+    },
+    cleanup: async emitter => {
+      return emitter.teardown();
+    },
   });
 
 export default ((plugin: any): FusionPlugin<DepsType, IEmitter>);
